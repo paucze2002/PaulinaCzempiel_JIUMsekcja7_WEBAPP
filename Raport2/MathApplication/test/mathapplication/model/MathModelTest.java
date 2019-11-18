@@ -54,7 +54,7 @@ public class MathModelTest {
         } catch(MathNoDataException e){
             
         }
-        
+        //TODO better tests, only public methods? change model? 
         try{
             int[] array = {5, 1, 7};
             ArrayList<Double> results = null;            
@@ -64,7 +64,7 @@ public class MathModelTest {
         } catch(Exception e){
         }
          try{
-            int[] array = {13, 0, a};
+            int[] array = {13, 0, 3,4};
             ArrayList<Double> results = null;            
             MathModel instance = new MathModel();
             instance.count(array, results);
