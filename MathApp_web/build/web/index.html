@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>AVERAGE MEDIAN STANDARD DEVIATION COUNT</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div id="view">
+            <h1 id="label1">Please enter numbers to count (after spacebar), results: average, median and standard deviation. </h1>
+            <form action="Convert" method="POST">
+                <input type="text" value="" name="number" >
+                <button name="h2d" type="submit">Count</button>
+            </form>
+            <h2 id="label2">Results: </h2>
+            <form action="History" method="POST">
+                <input name="history" type="submit" value="History" />
+                <h3 id="historyList"></h3>
+            </form>
+            <div id="message"> </div>
+        </div>
+    </body>
+</html>

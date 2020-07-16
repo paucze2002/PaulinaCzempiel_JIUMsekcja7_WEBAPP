@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ConverterModel.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Hex_Dec_Converter_Web&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">ConverterModel.java</span></div><h1>ConverterModel.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package model;
+import static java.lang.Math.*;
+import exception.NotHexException;
+
+import java.util.List;
+import java.util.LinkedList;
+
+
+
+/**
+ * Class that is ressponsible for logic of conversion
+ * @author Paulina
+ * @version 2.1
+ */
+public class ConverterModel {
+  
+     /**
+     * history of conversion
+     */
+    private List &lt;String&gt; conversionHistory;
+    
+    /**
+     * String representing digits in hexadecimal system. Index of character is a decimal walue of digit.
+     */
+    private String hexDigits;
+    
+    /**
+     * value in hexadecimal system
+     */
+    private String hexValue;
+    
+    /**
+     * value in decimal system
+     */
+    private String decValueAsString;
+    
+    /**
+     * direction of conversion:
+     * true - hexadecimal to decimal
+     * false - decimal to hexadecimal
+     */
+    private boolean h2d;
+    
+   /**
+     * Argumentless constructor
+     */ 
+    public ConverterModel()
+<span class="nc" id="L53">    {</span>
+<span class="nc" id="L54">        hexDigits = &quot;0123456789ABCDEF&quot;;</span>
+<span class="nc" id="L55">        h2d = true;</span>
+<span class="nc" id="L56">        hexValue = &quot;&quot;;</span>
+<span class="nc" id="L57">        decValueAsString = &quot;&quot;;</span>
+<span class="nc" id="L58">        conversionHistory = new LinkedList();</span>
+<span class="nc" id="L59">    }</span>
+    
+  
+    /**
+     * Constructor init values
+     * @param direction direction of conversion
+     * @param value value to convert
+     */
+    public ConverterModel(boolean direction, String value)
+<span class="fc" id="L68">    {</span>
+<span class="fc" id="L69">        h2d=direction;</span>
+<span class="fc" id="L70">        hexDigits = &quot;0123456789ABCDEF&quot;;</span>
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if (h2d)</span>
+        {
+<span class="nc" id="L73">            hexValue = value;</span>
+<span class="nc" id="L74">            decValueAsString = &quot;&quot;;</span>
+        }
+        else
+        {
+<span class="fc" id="L78">            decValueAsString = value;</span>
+<span class="fc" id="L79">            hexValue = &quot;&quot;;</span>
+        }
+<span class="fc" id="L81">        conversionHistory = new LinkedList();</span>
+<span class="fc" id="L82">    }</span>
+           
+    /**
+     * Method converting hexadecimal number to decimal 
+     * @throws NotHexException if hexadecimal value contains invalid character in hexadecimal system
+     */
+    private void converterHex2Dec() throws NotHexException
+    {
+<span class="fc bfc" id="L90" title="All 4 branches covered.">        if(hexValue == null || hexValue.isEmpty())</span>
+        {
+<span class="fc" id="L92">            decValueAsString = &quot;&quot;;</span>
+<span class="fc" id="L93">            return;</span>
+        }
+        else {
+<span class="fc" id="L96">        int power = 0;</span>
+<span class="fc" id="L97">        int decValue=0;</span>
+<span class="fc" id="L98">        hexValue=hexValue.toUpperCase();</span>
+        
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        for(int i = hexValue.length() ; i&gt;0; i-- )</span>
+        {
+<span class="fc" id="L102">            char c = hexValue.charAt(i-1);</span>
+            
+<span class="fc bfc" id="L104" title="All 2 branches covered.">            if (!hexDigits.contains(String.valueOf(c)))</span>
+            {
+<span class="fc" id="L106">                throw new NotHexException(&quot;Entered value is not in a hexadecimal format&quot;);</span>
+            }
+<span class="fc" id="L108">            decValue+= hexDigits.indexOf(c) * pow(16,power);</span>
+<span class="fc" id="L109">            power++;</span>
+        }
+<span class="fc" id="L111">        decValueAsString=String.valueOf(decValue);</span>
+        }
+<span class="fc" id="L113">    }</span>
+    
+    /**
+     * Method converting decimal number to hexadecimal
+     * @throws NumberFormatException value contains invalid character or is negative
+     */
+    private void converterDec2Hex()throws NumberFormatException
+    {
+<span class="fc bfc" id="L121" title="All 4 branches covered.">        if(decValueAsString == null || decValueAsString.isEmpty())</span>
+        {
+<span class="fc" id="L123">            hexValue = &quot;&quot;;</span>
+<span class="fc" id="L124">            decValueAsString = &quot;&quot;;</span>
+<span class="fc" id="L125">            return;</span>
+        }
+        else{
+            int tmpDecValue;
+            
+<span class="fc" id="L130">            try {tmpDecValue = Integer.valueOf(decValueAsString);}</span>
+<span class="fc" id="L131">            catch (NumberFormatException e)</span>
+<span class="fc" id="L132">            { throw new NumberFormatException(&quot;Entered value is not a positive integer&quot;);}</span>
+            
+<span class="fc bfc" id="L134" title="All 2 branches covered.">            if (tmpDecValue&lt;0)</span>
+<span class="fc" id="L135">                throw new NumberFormatException(&quot;Entered value is not a positive integer&quot;);</span>
+            
+            int remainder;
+            
+<span class="fc bfc" id="L139" title="All 2 branches covered.">            while(tmpDecValue &gt; 0)</span>
+            {
+<span class="fc" id="L141">            remainder= tmpDecValue%16;</span>
+<span class="fc" id="L142">            hexValue = String.valueOf(hexDigits.charAt(remainder)) + hexValue;</span>
+<span class="fc" id="L143">            tmpDecValue/=16;</span>
+            }
+        }
+<span class="fc" id="L146">    }</span>
+    
+    /**
+     * private setter change value direction of conversion
+     * @param direction 
+     */
+    private void setConversionDirect(boolean direction)
+    {
+<span class="fc" id="L154">        h2d = direction;</span>
+<span class="fc" id="L155">    }</span>
+    
+    /**
+     * Method that calls appropiate method of conversion in model depending on direction of conversion 
+     * @param direction direction of conversion
+     * @param value value to convert
+     * @throws NotHexException in conversion from hexadecimal system to decimal
+     */
+    public void convert(boolean direction, String value) throws NotHexException
+    {
+<span class="fc" id="L165">        setConversionDirect(direction);</span>
+<span class="fc" id="L166">        setValueToConvert(value);</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">        if(h2d)</span>
+<span class="fc" id="L168">            converterHex2Dec();</span>
+        else 
+<span class="fc" id="L170">            converterDec2Hex();</span>
+        
+<span class="fc" id="L172">    }</span>
+    
+    /**
+     * Getter actual result of conversion
+     * @return value depending on actual conversion direct
+     */
+    public String getResult()
+    {
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        if(h2d)</span>
+<span class="fc" id="L181">            return decValueAsString;</span>
+        else
+<span class="fc" id="L183">            return hexValue;</span>
+            
+    }
+    
+    
+    /**
+     * Private method sets values to convert
+     * @param value is value to convert
+     */
+    private void setValueToConvert(String value)
+    {
+<span class="fc bfc" id="L194" title="All 2 branches covered.">        if (h2d)</span>
+        {
+<span class="fc" id="L196">            hexValue=value;</span>
+<span class="fc" id="L197">            decValueAsString = &quot;&quot;;</span>
+        }
+        else
+        {
+<span class="fc" id="L201">            decValueAsString = value;</span>
+<span class="fc" id="L202">            hexValue=&quot;&quot;;</span>
+        }
+<span class="fc" id="L204">    }</span>
+    
+    /**
+     * getter
+     * @return conversion history
+     */
+    public List&lt;String&gt; getHistory()
+    {
+<span class="fc" id="L212">        return conversionHistory;</span>
+    }
+    
+    /**
+     * Interface used in lambda expression, to create new history.
+     * @author Paulina
+     * @version 1.0
+    */
+    @FunctionalInterface
+    public interface HistoryInterface {
+    /**
+     * Creates history of conversion
+     * @param a String number was converted
+     * @param b String result of conversion
+     * @return 
+     */
+        String historyCreator(String a, String b);
+    }
+    
+    /**
+     * Lambda expression using interface HistoryInterface
+     * @return conversion to create history
+     */
+    public String updateHistory()
+    {
+<span class="fc" id="L237">        HistoryInterface history = (String val, String res) -&gt; </span>
+        {
+<span class="fc" id="L239">            return val + &quot; --&gt; &quot; + res;</span>
+        };
+<span class="fc" id="L241">        String newHis = &quot;&quot;;</span>
+<span class="fc bfc" id="L242" title="All 6 branches covered.">        if(h2d &amp;&amp; !(hexValue == null) &amp;&amp; !decValueAsString.isEmpty())</span>
+        {   
+<span class="fc" id="L244">            newHis= history.historyCreator(hexValue, decValueAsString);</span>
+<span class="fc" id="L245">            conversionHistory.add(newHis);</span>
+        }
+<span class="pc bpc" id="L247" title="1 of 6 branches missed.">        else if (!h2d &amp;&amp; !(decValueAsString == null) &amp;&amp; !hexValue.isEmpty())</span>
+        {   
+<span class="fc" id="L249">            newHis= history.historyCreator(decValueAsString, hexValue);</span>
+<span class="fc" id="L250">            conversionHistory.add(newHis);</span>
+        } 
+<span class="fc" id="L252">        return newHis;</span>
+    }
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
